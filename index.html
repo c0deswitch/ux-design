@@ -1,6 +1,776 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anum Awan — Staff UX Designer</title>
+  <meta name="description" content="Anum Awan is a Staff UX Designer at Adobe with over a decade of experience building intuitive creative tools and engaging community experiences." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #222831;
+      --bg-card: #2d333c;
+      --bg-card-hover: #323a44;
+      --bg-gate: #2a3038;
+      --text: #EEEEEE;
+      --text-muted: rgba(238,238,238,0.5);
+      --text-dim: rgba(238,238,238,0.35);
+      --text-faint: rgba(238,238,238,0.2);
+      --text-hint: rgba(238,238,238,0.15);
+      --border: rgba(238,238,238,0.08);
+      --border-card: rgba(238,238,238,0.12);
+      --accent: #FFD369;
+      --accent-bg: rgba(255,211,105,0.1);
+      --font: 'Nunito Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 64px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+      border-bottom: 0.5px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    nav.scrolled { border-bottom-color: var(--border); }
+
+    .nav-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.4);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      padding: 96px 64px 80px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .hero h1 {
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 300;
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      max-width: 900px;
+      margin-bottom: 48px;
+    }
+
+    .hero h1 strong {
+      font-weight: 900;
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .bio-text {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.85;
+      font-weight: 300;
+      max-width: 560px;
+      padding-top: 40px;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .bio-text strong { color: var(--text); font-weight: 600; }
+
+    /* SECTION */
+    .section { padding: 72px 64px; }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 36px;
+      padding-bottom: 14px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.25);
+    }
+
+    .section-count { font-size: 11px; color: var(--text-hint); }
+
+    /* WORK GRID */
+    .work-wrapper { position: relative; }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      filter: blur(6px);
+      user-select: none;
+      pointer-events: none;
+      transition: filter 0.4s ease;
+    }
+
+    .work-grid.unlocked {
+      filter: none;
+      pointer-events: auto;
+      user-select: auto;
+    }
+
+    /* CARDS */
+    .work-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .work-card.clickable {
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .work-card.clickable:hover { transform: translateY(-4px); background: var(--bg-card-hover); }
+    .work-card.clickable:hover .card-title { color: var(--accent); }
+    .work-card.clickable:hover .card-arrow { color: var(--accent); }
+
+    .card-image {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card-image.gold { background-color: #2a2f38; }
+    .card-image.blue { background-color: #1e2a38; }
+    .card-image.teal { background-color: #1a2e2a; }
+    .card-image.purple { background-color: #221e38; }
+    .card-image.coral { background-color: #2e1e1a; }
+
+    .card-image-icon { font-size: 48px; opacity: 0.08; }
+    .card-image-icon.gold { color: var(--accent); }
+    .card-image-icon.blue { color: #85B7EB; }
+    .card-image-icon.teal { color: #5DCAA5; }
+    .card-image-icon.purple { color: #AFA9EC; }
+    .card-image-icon.coral { color: #F0997B; }
+
+    .card-image-label {
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.18);
+    }
+
+    .card-body {
+      padding: 20px 24px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .card-year { font-size: 11px; font-weight: 400; letter-spacing: 0.04em; color: rgba(238,238,238,0.5); }
+
+    .card-arrow {
+      font-size: 16px;
+      color: rgba(238,238,238,0.12);
+      transition: color 0.2s;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      transition: color 0.2s;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-dim);
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 18px;
+    }
+
+    .card-desc strong { color: rgba(238,238,238,0.6); font-weight: 600; }
+
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; }
+
+    .card-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 0.5px solid rgba(255,211,105,0.2);
+      color: rgba(255,211,105,0.6);
+    }
+
+    .card-tag.teal { border-color: rgba(93,202,165,0.2); color: rgba(93,202,165,0.6); }
+    .card-tag.blue { border-color: rgba(133,183,235,0.2); color: rgba(133,183,235,0.6); }
+    .card-tag.purple { border-color: rgba(175,169,236,0.2); color: rgba(175,169,236,0.6); }
+    .card-tag.coral { border-color: rgba(240,153,123,0.2); color: rgba(240,153,123,0.6); }
+
+    /* PASSWORD GATE */
+    .password-gate {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      height: calc(50% - 8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .gate-box {
+      background: var(--bg-gate);
+      border: 0.5px solid var(--border-card);
+      border-radius: 14px;
+      padding: 32px 36px;
+      text-align: center;
+      width: 320px;
+      pointer-events: auto;
+    }
+
+    .gate-icon { font-size: 20px; color: var(--accent); margin-bottom: 12px; }
+
+    .gate-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .gate-sub {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(238,238,238,0.4);
+      margin-bottom: 20px;
+      line-height: 1.55;
+    }
+
+    .gate-row { display: flex; gap: 8px; }
+
+    .gate-input {
+      flex: 1;
+      background: rgba(238,238,238,0.04);
+      border: 0.5px solid rgba(238,238,238,0.15);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-family: var(--font);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .gate-input:focus { border-color: rgba(255,255,255,0.3); }
+    .gate-input::placeholder { color: rgba(238,238,238,0.2); }
+
+    .gate-btn {
+      background: #EEEEEE;
+      color: #222831;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: var(--font);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .gate-btn:hover { background: var(--accent); }
+
+    .gate-error {
+      font-size: 11px;
+      color: #F09595;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* RESUME */
+    .resume-section {
+      padding: 72px 64px;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .resume-section-title {
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 52px;
+      letter-spacing: -0.02em;
+    }
+
+    .resume-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; }
+
+    .resume-col-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.22);
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .exp-item { padding: 18px 0; border-bottom: 0.5px solid rgba(238,238,238,0.06); }
+
+    .exp-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 3px;
+    }
+
+    .exp-role { font-size: 15px; font-weight: 600; color: var(--text); }
+    .exp-date { font-size: 11px; font-weight: 300; color: var(--text-faint); }
+    .exp-company { font-size: 13px; font-weight: 400; color: var(--accent); margin-bottom: 5px; }
+    .exp-desc { font-size: 12px; font-weight: 300; color: var(--text-dim); line-height: 1.65; }
+
+    .skills-block { margin-bottom: 28px; }
+
+    .skills-block-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(238,238,238,0.2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .skills-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .skill-pill {
+      font-size: 11px;
+      font-weight: 300;
+      padding: 5px 13px;
+      border-radius: 20px;
+      border: 0.5px solid rgba(238,238,238,0.1);
+      color: rgba(238,238,238,0.4);
+    }
+
+    .edu-item { padding: 14px 0; border-bottom: 0.5px solid rgba(238,238,238,0.06); }
+    .edu-degree { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .edu-school { font-size: 13px; font-weight: 400; color: var(--accent); margin-bottom: 2px; }
+    .edu-year { font-size: 11px; font-weight: 300; color: var(--text-faint); }
+
+    /* FOOTER */
+    footer {
+      padding: 28px 64px;
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-note { font-size: 11px; font-weight: 300; color: rgba(238,238,238,0.18); }
+    .footer-links { display: flex; gap: 20px; }
+
+    .footer-links a {
+      color: rgba(238,238,238,0.2);
+      text-decoration: none;
+      font-size: 18px;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* UTILITIES */
+    .hidden { display: none !important; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .hero { padding: 60px 24px 48px; }
+      .hero h1 { font-size: 40px; }
+      .section { padding: 48px 24px; }
+      .work-grid { grid-template-columns: 1fr; }
+      .resume-section { padding: 48px 24px; }
+      .resume-grid { grid-template-columns: 1fr; gap: 40px; }
+      footer { padding: 24px; flex-direction: column; gap: 16px; }
+      .gate-box { width: 280px; padding: 24px; }
+    }
+  </style>
+</head>
 <body>
-<h1>Coming soon</h1>
+
+  <nav id="mainNav">
+    <a href="/" class="nav-name">Anum Awan</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#resume">Resume</a></li>
+      <li><a href="mailto:anum.awan@gmail.com">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h1>Making things that are <strong>usable</strong><br>and <strong>delightful</strong></h1>
+    <p class="bio-text">I'm Anum (they/them) — a product designer with <strong>over a decade of experience</strong> building intuitive creative tools and engaging community experiences. Currently at Adobe, where I design for millions of creators.</p>
+  </section>
+
+  <section class="section" id="work">
+    <div class="section-header">
+      <span class="section-label">Selected work</span>
+      <span class="section-count" id="sectionCount">Password protected</span>
+    </div>
+
+    <div class="work-wrapper">
+      <div class="work-grid" id="workGrid">
+
+        <!-- Hidden until unlock -->
+        <a class="work-card clickable hidden" href="firefly-gallery.html" id="card1">
+          <div class="card-image gold">
+            <i class="ti ti-photo card-image-icon gold" aria-hidden="true"></i>
+            <span class="card-image-label">Add your image</span>
+          </div>
+          <div class="card-body">
+            <div class="card-top">
+              <p class="card-year">2023 – 2024</p>
+              <i class="ti ti-arrow-up-right card-arrow" aria-hidden="true"></i>
+            </div>
+            <h3 class="card-title">Firefly UGC Gallery</h3>
+            <p class="card-desc">First iteration of Firefly's community gallery. Now drives <strong>2M+ monthly visitors</strong> with <strong>27% clicking through</strong> into the creation tool.</p>
+            <div class="card-tags">
+              <span class="card-tag">Gen AI</span>
+              <span class="card-tag">End-to-end</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="work-card clickable hidden" href="unified-profile.html" id="card2">
+          <div class="card-image blue">
+            <i class="ti ti-user card-image-icon blue" aria-hidden="true"></i>
+            <span class="card-image-label">Add your image</span>
+          </div>
+          <div class="card-body">
+            <div class="card-top">
+              <p class="card-year">2022 – 2023</p>
+              <i class="ti ti-arrow-up-right card-arrow" aria-hidden="true"></i>
+            </div>
+            <h3 class="card-title">Unified Adobe Profile</h3>
+            <p class="card-desc">Year-long vision project exploring a <strong>universal creative identity</strong> across all Adobe surfaces — Behance, Lightroom, App Communities, and beyond.</p>
+            <div class="card-tags">
+              <span class="card-tag blue">Incubation</span>
+              <span class="card-tag blue">Strategy</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Always blurred, clickable after unlock -->
+        <a class="work-card" href="app-communities.html" id="card3">
+          <div class="card-image teal">
+            <i class="ti ti-building-community card-image-icon teal" aria-hidden="true"></i>
+            <span class="card-image-label">Add your image</span>
+          </div>
+          <div class="card-body">
+            <div class="card-top">
+              <p class="card-year">2021 – 2022</p>
+              <i class="ti ti-arrow-up-right card-arrow" aria-hidden="true"></i>
+            </div>
+            <h3 class="card-title">App Communities Migration</h3>
+            <p class="card-desc">End-to-end design migration of <strong>106 Adobe App Communities</strong> from Khoros to Gainsight over 9 months.</p>
+            <div class="card-tags">
+              <span class="card-tag teal">Migration</span>
+              <span class="card-tag teal">Systems</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="work-card" href="project-4.html" id="card4">
+          <div class="card-image purple">
+            <i class="ti ti-layout-grid card-image-icon purple" aria-hidden="true"></i>
+            <span class="card-image-label">Add your image</span>
+          </div>
+          <div class="card-body">
+            <div class="card-top">
+              <p class="card-year">2021</p>
+              <i class="ti ti-arrow-up-right card-arrow" aria-hidden="true"></i>
+            </div>
+            <h3 class="card-title">Project 4</h3>
+            <p class="card-desc">Coming soon.</p>
+            <div class="card-tags">
+              <span class="card-tag purple">Coming soon</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="work-card" href="project-5.html" id="card5">
+          <div class="card-image coral">
+            <i class="ti ti-device-desktop card-image-icon coral" aria-hidden="true"></i>
+            <span class="card-image-label">Add your image</span>
+          </div>
+          <div class="card-body">
+            <div class="card-top">
+              <p class="card-year">2020</p>
+              <i class="ti ti-arrow-up-right card-arrow" aria-hidden="true"></i>
+            </div>
+            <h3 class="card-title">Project 5</h3>
+            <p class="card-desc">Coming soon.</p>
+            <div class="card-tags">
+              <span class="card-tag coral">Coming soon</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="work-card" href="project-6.html" id="card6">
+          <div class="card-image gold">
+            <i class="ti ti-brush card-image-icon gold" aria-hidden="true"></i>
+            <span class="card-image-label">Add your image</span>
+          </div>
+          <div class="card-body">
+            <div class="card-top">
+              <p class="card-year">2019</p>
+              <i class="ti ti-arrow-up-right card-arrow" aria-hidden="true"></i>
+            </div>
+            <h3 class="card-title">Project 6</h3>
+            <p class="card-desc">Coming soon.</p>
+            <div class="card-tags">
+              <span class="card-tag">Coming soon</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+
+      <div class="password-gate" id="passwordGate">
+        <div class="gate-box">
+          <i class="ti ti-lock gate-icon" aria-hidden="true"></i>
+          <p class="gate-title">View projects</p>
+          <p class="gate-sub">Enter the password to unlock projects.</p>
+          <div class="gate-row">
+            <input class="gate-input" type="password" placeholder="Password" id="pwInput" autocomplete="off" />
+            <button class="gate-btn" id="gateBtn" onclick="checkPassword()">Unlock</button>
+          </div>
+          <p class="gate-error" id="gateError">Incorrect password.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="resume-section" id="resume">
+    <h2 class="resume-section-title">Experience & skills</h2>
+    <div class="resume-grid">
+      <div>
+        <p class="resume-col-label">Experience</p>
+
+        <div class="exp-item">
+          <div class="exp-row">
+            <span class="exp-role">Staff UX Designer</span>
+            <span class="exp-date">2021 – Present</span>
+          </div>
+          <p class="exp-company">Adobe · San Francisco</p>
+          <p class="exp-desc">Design lead for Adobe Community — generative AI surfaces, community experiences, and identity systems at scale.</p>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-row">
+            <span class="exp-role">Product Designer</span>
+            <span class="exp-date">2020 – 2021</span>
+          </div>
+          <p class="exp-company">Lightform · San Francisco</p>
+          <p class="exp-desc">Led design of Lightform Creator, a projection mapping software for AR content creation.</p>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-row">
+            <span class="exp-role">UX Designer</span>
+            <span class="exp-date">2019 – 2020</span>
+          </div>
+          <p class="exp-company">Minds of Tomorrow · San Francisco</p>
+          <p class="exp-desc">Designed interactive educational workshops on emerging technologies for students.</p>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-row">
+            <span class="exp-role">UX Designer</span>
+            <span class="exp-date">2018 – 2019</span>
+          </div>
+          <p class="exp-company">NIO · San Francisco</p>
+          <p class="exp-desc">UX/UI for autonomous vehicle interactions including AR and eye-tracking.</p>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-row">
+            <span class="exp-role">Graphic Designer</span>
+            <span class="exp-date">2012 – 2016</span>
+          </div>
+          <p class="exp-company">Fenway Health · Boston</p>
+          <p class="exp-desc">Visual direction for print and digital materials across campaigns and brand communications.</p>
+        </div>
+
+        <p class="resume-col-label" style="margin-top: 44px;">Education</p>
+
+        <div class="edu-item">
+          <p class="edu-degree">MDes Interaction Design</p>
+          <p class="edu-school">California College of the Arts</p>
+          <p class="edu-year">2016 – 2017 · San Francisco</p>
+        </div>
+
+        <div class="edu-item">
+          <p class="edu-degree">BFA Graphic Design</p>
+          <p class="edu-school">Massachusetts College of Art & Design</p>
+          <p class="edu-year">2008 – 2012 · Boston</p>
+        </div>
+      </div>
+
+      <div>
+        <p class="resume-col-label">Skills</p>
+
+        <div class="skills-block">
+          <p class="skills-block-label">Core competencies</p>
+          <div class="skills-pills">
+            <span class="skill-pill">End-to-end product design</span>
+            <span class="skill-pill">Design strategy</span>
+            <span class="skill-pill">Design systems</span>
+            <span class="skill-pill">Interaction design</span>
+            <span class="skill-pill">Information architecture</span>
+            <span class="skill-pill">Community experience</span>
+            <span class="skill-pill">Gen AI product design</span>
+            <span class="skill-pill">Cross-functional leadership</span>
+          </div>
+        </div>
+
+        <div class="skills-block">
+          <p class="skills-block-label">Methods</p>
+          <div class="skills-pills">
+            <span class="skill-pill">User research</span>
+            <span class="skill-pill">Usability testing</span>
+            <span class="skill-pill">Journey mapping</span>
+            <span class="skill-pill">Competitive auditing</span>
+            <span class="skill-pill">Prototyping</span>
+            <span class="skill-pill">Accessibility</span>
+            <span class="skill-pill">Content strategy</span>
+          </div>
+        </div>
+
+        <div class="skills-block">
+          <p class="skills-block-label">Tools</p>
+          <div class="skills-pills">
+            <span class="skill-pill">Figma</span>
+            <span class="skill-pill">Adobe Illustrator</span>
+            <span class="skill-pill">Adobe Photoshop</span>
+            <span class="skill-pill">Adobe InDesign</span>
+            <span class="skill-pill">Sketch</span>
+            <span class="skill-pill">Keynote</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-note">© 2026 Anum Awan · anumawan.design</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/anumawan" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="ti ti-brand-linkedin" aria-hidden="true"></i></a>
+      <a href="https://www.behance.net/anumawan" aria-label="Behance" target="_blank" rel="noopener"><i class="ti ti-brand-behance" aria-hidden="true"></i></a>
+      <a href="mailto:anum.awan@gmail.com" aria-label="Email"><i class="ti ti-mail" aria-hidden="true"></i></a>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky nav border on scroll
+    window.addEventListener('scroll', function() {
+      document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // Password gate
+    function checkPassword() {
+      var input = document.getElementById('pwInput').value;
+      var error = document.getElementById('gateError');
+      if (input === 'showmework') {
+        document.getElementById('workGrid').classList.add('unlocked');
+        document.getElementById('passwordGate').style.display = 'none';
+        document.getElementById('sectionCount').textContent = '6 projects';
+        ['card1', 'card2'].forEach(function(id) {
+          document.getElementById(id).classList.remove('hidden');
+        });
+        ['card3', 'card4', 'card5', 'card6'].forEach(function(id) {
+          var c = document.getElementById(id);
+          c.classList.add('clickable');
+        });
+        // Persist unlock for session
+        sessionStorage.setItem('unlocked', 'true');
+      } else {
+        error.style.display = 'block';
+        document.getElementById('pwInput').value = '';
+      }
+    }
+
+    document.getElementById('pwInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    // Restore unlock state on page load
+    if (sessionStorage.getItem('unlocked') === 'true') {
+      checkPassword();
+    }
+  </script>
+
 </body>
 </html>
