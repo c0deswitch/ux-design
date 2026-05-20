@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Communities Migration — Anum Awan</title>
+  <meta name="description" content="Case study: Leading the design migration of 106 Adobe App Communities from Khoros to Gainsight." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #222831;
+      --bg-card: #2d333c;
+      --text: #EEEEEE;
+      --text-muted: rgba(238,238,238,0.6);
+      --text-dim: rgba(238,238,238,0.45);
+      --text-faint: rgba(238,238,238,0.35);
+      --border: rgba(238,238,238,0.08);
+      --accent: #FFD369;
+      --font: 'Nunito Sans', sans-serif;
+      --max: 720px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 64px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+      border-bottom: 0.5px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    nav.scrolled { border-bottom-color: var(--border); }
+
+    .nav-home {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s;
+    }
+    .nav-home:hover { color: var(--accent); }
+
+    .nav-case-title {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(238,238,238,0.3);
+    }
+
+    .case-hero {
+      padding: 80px 64px 72px;
+      border-bottom: 0.5px solid var(--border);
+      max-width: calc(var(--max) + 128px);
+      margin: 0 auto;
+    }
+
+    .case-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .case-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 0.5px solid rgba(93,202,165,0.25);
+      color: rgba(93,202,165,0.7);
+    }
+
+    .case-hero h1 {
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 24px;
+      max-width: 700px;
+    }
+
+    .case-hero h1 strong {
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .case-lede {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: var(--max);
+      margin-bottom: 48px;
+    }
+
+    .case-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      border-top: 0.5px solid var(--border);
+      padding-top: 32px;
+    }
+
+    .meta-item { padding: 16px 0 16px 20px; border-left: 2px solid rgba(93,202,165,0.2); }
+    .meta-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.35);
+      margin-bottom: 6px;
+    }
+    .meta-value {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .case-content {
+      max-width: calc(var(--max) + 128px);
+      margin: 0 auto;
+      padding: 0 64px 96px;
+    }
+
+    .img-full { width: 100%; margin: 56px 0; }
+
+    .img-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-card);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 1px dashed rgba(238,238,238,0.12);
+    }
+
+    .img-placeholder.wide { aspect-ratio: 21 / 9; }
+    .img-placeholder.tall { aspect-ratio: 4 / 3; }
+
+    .img-placeholder-icon { font-size: 32px; color: rgba(238,238,238,0.15); }
+
+    .img-placeholder-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(238,238,238,0.25);
+      text-align: center;
+      padding: 0 24px;
+      line-height: 1.5;
+    }
+
+    .img-caption {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text-faint);
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    .img-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 56px 0;
+    }
+
+    .img-2col .img-placeholder { aspect-ratio: 4 / 3; }
+
+    .case-section { padding: 64px 0 0; }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.35);
+      margin-bottom: 16px;
+    }
+
+    .case-section h2 {
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 300;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      max-width: var(--max);
+    }
+
+    .case-section h2 strong { font-weight: 700; color: var(--accent); }
+
+    .case-section p {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: var(--max);
+      margin-bottom: 20px;
+    }
+
+    .case-section p:last-child { margin-bottom: 0; }
+    .case-section p strong { font-weight: 600; color: var(--text); }
+
+    .callout {
+      border-left: 2px solid var(--accent);
+      padding: 20px 24px;
+      margin: 36px 0;
+      background: rgba(255,211,105,0.04);
+      border-radius: 0 8px 8px 0;
+      max-width: var(--max);
+    }
+
+    .callout p {
+      font-size: 15px;
+      font-weight: 400;
+      color: rgba(238,238,238,0.75);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .process-steps {
+      max-width: var(--max);
+      margin: 40px 0;
+    }
+
+    .process-step {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 0.5px solid var(--border);
+      align-items: start;
+    }
+
+    .process-step:last-child { border-bottom: none; }
+
+    .step-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      padding-top: 2px;
+    }
+
+    .step-body h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .step-body p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin: 0;
+      max-width: none;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin: 40px 0;
+      max-width: var(--max);
+    }
+
+    .stat-box {
+      padding: 24px;
+      background: var(--bg-card);
+    }
+    .stat-box:first-child { border-radius: 8px 0 0 8px; }
+    .stat-box:last-child { border-radius: 0 8px 8px 0; }
+
+    .stat-num {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .divider {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      margin: 64px 0 0;
+    }
+
+    .case-nav {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 48px 64px;
+      border-top: 0.5px solid var(--border);
+      max-width: calc(var(--max) + 128px);
+      margin: 0 auto;
+    }
+
+    .case-nav-link {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-decoration: none;
+      transition: opacity 0.15s;
+      text-align: right;
+    }
+    .case-nav-link:hover { opacity: 0.7; }
+
+    .case-nav-dir {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.35);
+    }
+
+    .case-nav-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .nav-case-title { display: none; }
+      .case-hero { padding: 48px 24px 40px; }
+      .case-content { padding: 0 24px 72px; }
+      .case-meta { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .img-2col { grid-template-columns: 1fr; }
+      .stat-row { grid-template-columns: 1fr; }
+      .stat-box { border-radius: 8px !important; }
+      .case-nav { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="mainNav">
+    <a href="index.html" class="nav-home">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i>
+      Anum Awan
+    </a>
+    <span class="nav-case-title">App Communities Migration</span>
+  </nav>
+
+  <header class="case-hero">
+    <div class="case-tags">
+      <span class="case-tag">Migration</span>
+      <span class="case-tag">Systems</span>
+    </div>
+    <h1>App Communities <strong>Migration</strong></h1>
+    <p class="case-lede">Leading the end-to-end design of Adobe's migration of 106 App Communities from a legacy vendor to a modern platform — improving the experience for millions of customers seeking support across Adobe's product ecosystem.</p>
+
+    <div class="case-meta">
+      <div class="meta-item">
+        <p class="meta-label">Role</p>
+        <p class="meta-value">Staff UX Designer, Design Lead</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Timeline</p>
+        <p class="meta-value">9 months · 2021–2022</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Platform</p>
+        <p class="meta-value">Web · Adobe App Communities</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Team</p>
+        <p class="meta-value">2 PMs, 3 Engineers + Gainsight team</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="case-content">
+
+    <!-- HERO IMAGE -->
+    <div class="img-full">
+      <div class="img-placeholder">
+        <i class="ti ti-building-community img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>Hero image</strong> — A polished full-width screenshot of the new Gainsight community landing page after migration. Show the homepage of one of the 106 communities at its best. 2400×1350px.</p>
+      </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="case-section">
+      <p class="section-eyebrow">Overview</p>
+      <h2>106 communities. One chance to get it <strong>right</strong>.</h2>
+      <p>Adobe operates 106 App Communities — support forums where customers get help, report bugs, and request features across Adobe's product portfolio. For years these communities lived on Khoros, a third-party platform that had grown increasingly limiting. The decision was made to migrate to Gainsight, a more modern platform better suited to the experience Adobe wanted to deliver.</p>
+      <p>I was the design lead for the entire migration — responsible for the vision, the research, the design system, and the implementation partnership with Gainsight's engineering team.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- PROBLEM -->
+    <div class="case-section">
+      <p class="section-eyebrow">The problem</p>
+      <h2>A platform that had stopped <strong>serving users</strong></h2>
+      <p>The existing communities weren't working well for customers or for Adobe. The platform felt dated and offered little flexibility to shape the experience around user needs or brand standards. Key features were missing — there was no structured way to report a bug or request a feature, which meant customer feedback was getting lost in open-ended discussion threads.</p>
+
+      <div class="callout">
+        <p>The goal wasn't just to move — it was to arrive somewhere meaningfully better. This was a rare opportunity to rethink the entire experience from the ground up, unconstrained by the old platform's limitations.</p>
+      </div>
+    </div>
+
+    <!-- BEFORE/AFTER -->
+    <div class="img-2col">
+      <div>
+        <div class="img-placeholder tall">
+          <i class="ti ti-clock img-placeholder-icon" aria-hidden="true"></i>
+          <p class="img-placeholder-label"><strong>Before — Khoros</strong> — Screenshot of the old community experience on Khoros. Can be a cropped homepage or thread view showing the dated UI. 1200×900px.</p>
+        </div>
+        <p class="img-caption">Before — the Khoros platform.</p>
+      </div>
+      <div>
+        <div class="img-placeholder tall">
+          <i class="ti ti-sparkles img-placeholder-icon" aria-hidden="true"></i>
+          <p class="img-placeholder-label"><strong>After — Gainsight</strong> — Screenshot of the new community experience post-migration. Same type of view (homepage or thread) for a direct comparison. 1200×900px.</p>
+        </div>
+        <p class="img-caption">After — the redesigned Gainsight experience.</p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- PROCESS -->
+    <div class="case-section">
+      <p class="section-eyebrow">Process</p>
+      <h2>Four phases across <strong>nine months</strong></h2>
+      <p>The migration unfolded in four distinct phases, each building on the last. The key discipline throughout was separating the vision from the constraints — knowing what we were aiming for before letting platform limitations shape what we'd build.</p>
+    </div>
+
+    <div class="process-steps">
+      <div class="process-step">
+        <span class="step-num">01</span>
+        <div class="step-body">
+          <h3>Vision — platform agnostic</h3>
+          <p>Before any vendor was chosen, I developed platform-agnostic vision designs representing what a best-in-class support community could look like for Adobe customers. This work was deliberately unconstrained — it gave the team a north star grounded in user needs and design ambition rather than whatever any given platform happened to offer out of the box.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <span class="step-num">02</span>
+        <div class="step-body">
+          <h3>Research & competitive audit</h3>
+          <p>I conducted an extensive audit of support communities across the tech industry, identifying patterns in information architecture, content strategy, navigation, and community engagement mechanics. The goal was to understand established conventions worth adopting — and gaps worth owning.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <span class="step-num">03</span>
+        <div class="step-body">
+          <h3>Adaptation & tradeoff negotiation</h3>
+          <p>Once Gainsight was selected, I led a thorough evaluation of what the platform offered out of the box versus what our vision required. Working closely with Gainsight's program managers, product managers, and engineers, I mapped our vision against their platform capabilities and made principled decisions about where to push their system and where to accept constraints.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <span class="step-num">04</span>
+        <div class="step-body">
+          <h3>Design, handoff & quality assurance</h3>
+          <p>I created full-page designs and a complete design system for Gainsight's team to implement. I then worked directly with their front-end engineers through implementation, maintaining close involvement to ensure design fidelity and conducting extensive quality reviews at every stage.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISION IMAGE -->
+    <div class="img-full">
+      <div class="img-placeholder">
+        <i class="ti ti-bulb img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>Vision design</strong> — One of your early platform-agnostic explorations showing the design ambition before vendor selection. A Figma frame or high-fidelity mockup works well here. 2400×1350px.</p>
+      </div>
+      <p class="img-caption">Early vision design — platform agnostic, setting the north star before vendor selection.</p>
+    </div>
+
+    <!-- DESIGN SYSTEM -->
+    <div class="case-section">
+      <p class="section-eyebrow">Design system</p>
+      <h2>Building for <strong>106 communities at once</strong></h2>
+      <p>One of the central design challenges was scale. Any design decision I made would need to apply consistently across 106 different communities, each serving a different Adobe product and its distinct user base. This meant thinking in systems, not screens — every component, pattern, and decision needed to be reusable, flexible, and well-documented for the Gainsight engineering team to implement.</p>
+    </div>
+
+    <div class="img-full">
+      <div class="img-placeholder">
+        <i class="ti ti-layout-grid img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>Design system</strong> — A view of the component library or design system you created for Gainsight to implement. Could be a Figma screenshot showing components, tokens, or a key page layout. 2400×1350px.</p>
+      </div>
+      <p class="img-caption">The design system built for Gainsight's engineering team — covering components, typography, colour, and layout patterns.</p>
+    </div>
+
+    <div class="img-2col">
+      <div>
+        <div class="img-placeholder tall">
+          <i class="ti ti-bug img-placeholder-icon" aria-hidden="true"></i>
+          <p class="img-placeholder-label"><strong>Bug reporting flow</strong> — The new structured bug reporting feature, one of the key additions post-migration. A screen or flow from Figma. 1200×900px.</p>
+        </div>
+        <p class="img-caption">New structured bug reporting — giving customers a clear path to surface issues.</p>
+      </div>
+      <div>
+        <div class="img-placeholder tall">
+          <i class="ti ti-star img-placeholder-icon" aria-hidden="true"></i>
+          <p class="img-placeholder-label"><strong>Feature request flow</strong> — The new feature request experience, another key new addition. A screen or flow from Figma. 1200×900px.</p>
+        </div>
+        <p class="img-caption">New feature requesting — closing the feedback loop between customers and product teams.</p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- OUTCOME -->
+    <div class="case-section">
+      <p class="section-eyebrow">Outcome</p>
+      <h2>All 106 communities, <strong>successfully migrated</strong></h2>
+      <p>The migration was completed on schedule across all 106 communities. The new platform introduced structured bug reporting and feature requesting — giving customers clearer, more actionable ways to get help and make their voices heard. The new experience brought Adobe's community presence in line with where the product and brand had evolved, built on a foundation designed to scale.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <span class="stat-num">106</span>
+        <span class="stat-label">Communities successfully migrated</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">9</span>
+        <span class="stat-label">Months end-to-end</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">2</span>
+        <span class="stat-label">New features shipped: bug reporting & feature requesting</span>
+      </div>
+    </div>
+
+    <!-- FINAL IMAGE -->
+    <div class="img-full">
+      <div class="img-placeholder wide">
+        <i class="ti ti-layout-columns img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>Closing image</strong> — A wide, polished view of the final community experience. Could be a full browser screenshot or a composed mockup showing the community homepage in context. 2400×1030px (21:9).</p>
+      </div>
+    </div>
+
+  </main>
+
+  <nav class="case-nav">
+    <a href="unified-profile.html" class="case-nav-link">
+      <span class="case-nav-dir">Next project</span>
+      <span class="case-nav-title">Unified Adobe Profile →</span>
+    </a>
+  </nav>
+
+  <script>
+    window.addEventListener('scroll', function() {
+      document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 10);
+    });
+  </script>
+
+</body>
+</html>
