@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firefly UGC Gallery — Anum Awan</title>
+  <meta name="description" content="Case study: Designing the first iteration of Adobe Firefly's user-generated content gallery." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #222831;
+      --bg-card: #2d333c;
+      --bg-card-hover: #323a44;
+      --text: #EEEEEE;
+      --text-muted: rgba(238,238,238,0.6);
+      --text-dim: rgba(238,238,238,0.45);
+      --text-faint: rgba(238,238,238,0.35);
+      --border: rgba(238,238,238,0.08);
+      --accent: #FFD369;
+      --font: 'Nunito Sans', sans-serif;
+      --max: 720px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 64px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+      border-bottom: 0.5px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    nav.scrolled { border-bottom-color: var(--border); }
+
+    .nav-home {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s;
+    }
+    .nav-home:hover { color: var(--accent); }
+
+    .nav-right {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .nav-case-title {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(238,238,238,0.3);
+      letter-spacing: 0.01em;
+    }
+
+    /* HERO */
+    .case-hero {
+      padding: 80px 64px 72px;
+      border-bottom: 0.5px solid var(--border);
+      max-width: calc(var(--max) + 128px);
+      margin: 0 auto;
+    }
+
+    .case-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .case-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 0.5px solid rgba(255,211,105,0.25);
+      color: rgba(255,211,105,0.7);
+    }
+
+    .case-hero h1 {
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 24px;
+      max-width: 700px;
+    }
+
+    .case-hero h1 strong {
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .case-lede {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: var(--max);
+      margin-bottom: 48px;
+    }
+
+    .case-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      border-top: 0.5px solid var(--border);
+      padding-top: 32px;
+    }
+
+    .meta-item { padding: 16px 0 16px 20px; border-left: 2px solid rgba(255,211,105,0.2); }
+    .meta-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.35);
+      margin-bottom: 6px;
+    }
+    .meta-value {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* CONTENT */
+    .case-content {
+      max-width: calc(var(--max) + 128px);
+      margin: 0 auto;
+      padding: 0 64px 96px;
+    }
+
+    /* FULL-WIDTH IMAGE */
+    .img-full {
+      width: 100%;
+      margin: 56px 0;
+    }
+
+    .img-full .img-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-card);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 1px dashed rgba(238,238,238,0.12);
+    }
+
+    .img-placeholder-icon {
+      font-size: 32px;
+      color: rgba(238,238,238,0.15);
+    }
+
+    .img-placeholder-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(238,238,238,0.25);
+      text-align: center;
+      padding: 0 24px;
+      line-height: 1.5;
+    }
+
+    .img-caption {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text-faint);
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* 2-COL IMAGES */
+    .img-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 56px 0;
+    }
+
+    .img-2col .img-placeholder {
+      aspect-ratio: 4 / 3;
+      background: var(--bg-card);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px dashed rgba(238,238,238,0.12);
+    }
+
+    /* SECTION */
+    .case-section {
+      padding: 64px 0 0;
+    }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.35);
+      margin-bottom: 16px;
+    }
+
+    .case-section h2 {
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 300;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      max-width: var(--max);
+    }
+
+    .case-section h2 strong {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .case-section p {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: var(--max);
+      margin-bottom: 20px;
+    }
+
+    .case-section p:last-child { margin-bottom: 0; }
+
+    .case-section p strong {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* CALLOUT */
+    .callout {
+      border-left: 2px solid var(--accent);
+      padding: 20px 24px;
+      margin: 36px 0;
+      background: rgba(255,211,105,0.04);
+      border-radius: 0 8px 8px 0;
+      max-width: var(--max);
+    }
+
+    .callout p {
+      font-size: 15px;
+      font-weight: 400;
+      color: rgba(238,238,238,0.75);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* STAT ROW */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin: 40px 0;
+      max-width: var(--max);
+    }
+
+    .stat-box {
+      padding: 24px;
+      background: var(--bg-card);
+      border-radius: 0;
+    }
+    .stat-box:first-child { border-radius: 8px 0 0 8px; }
+    .stat-box:last-child { border-radius: 0 8px 8px 0; }
+
+    .stat-num {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      margin: 64px 0 0;
+    }
+
+    /* NEXT / PREV */
+    .case-nav {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 48px 64px;
+      border-top: 0.5px solid var(--border);
+      max-width: calc(var(--max) + 128px);
+      margin: 0 auto;
+    }
+
+    .case-nav-link {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-decoration: none;
+      transition: opacity 0.15s;
+      text-align: right;
+    }
+    .case-nav-link:hover { opacity: 0.7; }
+
+    .case-nav-dir {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.35);
+    }
+
+    .case-nav-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .nav-case-title { display: none; }
+      .case-hero { padding: 48px 24px 40px; }
+      .case-content { padding: 0 24px 72px; }
+      .case-meta { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .img-2col { grid-template-columns: 1fr; }
+      .stat-row { grid-template-columns: 1fr; }
+      .stat-box { border-radius: 8px !important; }
+      .case-nav { padding: 36px 24px; }
+    }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  </style>
+</head>
+<body>
+
+  <nav id="mainNav">
+    <a href="index.html" class="nav-home">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i>
+      Anum Awan
+    </a>
+    <div class="nav-right">
+      <span class="nav-case-title">Firefly UGC Gallery</span>
+    </div>
+  </nav>
+
+  <header class="case-hero">
+    <div class="case-tags">
+      <span class="case-tag">Gen AI</span>
+      <span class="case-tag">End-to-end</span>
+    </div>
+    <h1>Firefly <strong>UGC</strong> Gallery</h1>
+    <p class="case-lede">Designing the first iteration of Adobe Firefly's community gallery — a surface that teaches creators how to use generative AI by showing them what's possible, and how to get there.</p>
+
+    <div class="case-meta">
+      <div class="meta-item">
+        <p class="meta-label">Role</p>
+        <p class="meta-value">Senior UX Designer, Design Lead</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Timeline</p>
+        <p class="meta-value">2023 – 2024</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Platform</p>
+        <p class="meta-value">Web · firefly.adobe.com</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Team</p>
+        <p class="meta-value">Design, PM, Engineering, Research</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="case-content">
+
+    <!-- HERO IMAGE -->
+    <div class="img-full">
+      <div class="img-placeholder">
+        <i class="ti ti-layout-grid card-image-icon img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>Hero image</strong> — Full-width screenshot of the Firefly gallery at its best. Ideally showing the masonry grid with a rich variety of AI-generated images visible. 2400×1350px recommended.</p>
+      </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="case-section">
+      <p class="section-eyebrow">Overview</p>
+      <h2>A gallery that teaches by <strong>showing</strong></h2>
+      <p>In late 2023, generative AI tools were new to most people. Adobe Firefly had launched, but awareness of what it could actually do — and confidence in using it — was low. The biggest barrier users cited wasn't the tool itself; it was not knowing how to prompt it effectively to get the results they wanted.</p>
+      <p>The Firefly UGC Gallery was my answer to that problem. I designed the first iteration of a community-powered gallery where Firefly users could share their AI-generated images alongside the prompts and settings used to create them — giving every visitor a starting point for inspiration and a faster path to mastering the tool.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- PROBLEM -->
+    <div class="case-section">
+      <p class="section-eyebrow">The problem</p>
+      <h2>Users were learning in <strong>isolation</strong></h2>
+      <p>A Firefly visitor survey found that the inability to achieve specific results was the most commonly cited reason users stopped engaging with Text to Image and Gen Fill. Users were learning through trial and error, often without any sense of what was possible.</p>
+
+      <div class="callout">
+        <p>The hypothesis: a gallery of real user-generated content, paired with visible prompts and settings, could serve two purposes simultaneously — showcasing the power of the model and teaching people how to use it.</p>
+      </div>
+
+      <p>Research validated that users engaged with the gallery in two distinct modes: <strong>inspiration</strong> (discovering what's possible) and <strong>education</strong> (learning how to replicate or build on what they saw). Both required seeing the work and the process behind it in one place.</p>
+    </div>
+
+    <!-- PROBLEM IMAGE -->
+    <div class="img-full">
+      <div class="img-placeholder">
+        <i class="ti ti-chart-bar img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>Research or insight visual</strong> — A slide or diagram from the UGC research report, or a visual showing user pain points. Could be a screenshot of the research deck's insight summary page. 1600×900px.</p>
+      </div>
+      <p class="img-caption">User research by Adobe Design Research, April 2024 — the gallery's two primary benefits: inspiration and education.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- DESIGN DECISIONS -->
+    <div class="case-section">
+      <p class="section-eyebrow">Design decisions</p>
+      <h2>The details that made it <strong>work</strong></h2>
+      <p>As design lead I owned the end-to-end experience: the overall layout and information architecture, the flow to submit images to the gallery, a way for users to view and manage their own submissions, and the metadata hover interaction that surfaced prompts and settings inline without leaving the browsing context.</p>
+      <p>Several of the most impactful design decisions came out of hard-fought technical constraints.</p>
+    </div>
+
+    <div class="img-2col">
+      <div>
+        <div class="img-placeholder">
+          <i class="ti ti-columns img-placeholder-icon" aria-hidden="true"></i>
+          <p class="img-placeholder-label"><strong>Masonry grid detail</strong> — Close-up of the grid showing different aspect ratios (landscape, portrait, square) displaying cleanly without cropping. 1200×900px.</p>
+        </div>
+        <p class="img-caption">The masonry grid handling mixed aspect ratios cleanly.</p>
+      </div>
+      <div>
+        <div class="img-placeholder">
+          <i class="ti ti-cursor-text img-placeholder-icon" aria-hidden="true"></i>
+          <p class="img-placeholder-label"><strong>Hover state</strong> — Screenshot showing the metadata overlay on hover: prompt text, style settings, and controls visible over an image. 1200×900px.</p>
+        </div>
+        <p class="img-caption">Prompt and settings revealed on hover — education without leaving the browse context.</p>
+      </div>
+    </div>
+
+    <div class="case-section" style="padding-top: 0;">
+      <p><strong>Infinite scroll</strong> so browsing felt effortless and open-ended. <strong>A masonry grid</strong> that could accommodate images generated at different aspect ratios — landscape, portrait, square, widescreen — and display them cleanly without cropping or distortion. And <strong>randomized content on each page refresh</strong>, so returning visitors weren't always greeted by the same images. That last detail mattered: a gallery that feels static stops being worth visiting.</p>
+    </div>
+
+    <!-- SUBMISSION FLOW -->
+    <div class="case-section">
+      <p class="section-eyebrow">Submission & profile</p>
+      <h2>Closing the loop for <strong>contributors</strong></h2>
+      <p>The gallery only works if creators are willing to submit their work. I designed the submission flow to be as frictionless as possible — surfacing it at the right moment in the Firefly creation experience — and gave users a dedicated view to see and manage the images they'd contributed.</p>
+    </div>
+
+    <div class="img-full">
+      <div class="img-placeholder">
+        <i class="ti ti-upload img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>Submission flow</strong> — 2–3 screens showing the flow to submit an image to the gallery. Can be a Figma mockup, prototype screenshot, or annotated wireframe. 2400×1000px or stacked vertically.</p>
+      </div>
+      <p class="img-caption">The submission flow — designed to be surfaced at the right moment in the creation experience.</p>
+    </div>
+
+    <div class="img-full">
+      <div class="img-placeholder">
+        <i class="ti ti-user-circle img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>My submissions view</strong> — The screen where a user can see all images they've submitted to the gallery, with options to manage them. 2400×1350px.</p>
+      </div>
+      <p class="img-caption">The submissions management view — giving contributors visibility and control over their work.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- OUTCOME -->
+    <div class="case-section">
+      <p class="section-eyebrow">Outcome</p>
+      <h2>A surface that drives <strong>real impact</strong></h2>
+      <p>The gallery shipped and was received extremely well. It has become one of the most significant acquisition and activation surfaces in the Firefly product — drawing in new users and converting a meaningful percentage directly into the creation tool.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <span class="stat-num">2M+</span>
+        <span class="stat-label">Monthly visitors to firefly.adobe.com</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">27%</span>
+        <span class="stat-label">Of gallery visitors click through to the creation tool</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">+37%</span>
+        <span class="stat-label">Relative lift in return visitor rate</span>
+      </div>
+    </div>
+
+    <div class="case-section" style="padding-top: 24px;">
+      <p>The +37% lift in return visitor rate and +31% lift in share rate demonstrate that the gallery wasn't just bringing people in — it was giving them a reason to come back. The research conducted after launch confirmed the core hypothesis: seeing others' prompts and settings genuinely helped users improve their own results, and the gallery became both an inspiration source and a learning tool for the Firefly community.</p>
+    </div>
+
+    <!-- FINAL IMAGE -->
+    <div class="img-full">
+      <div class="img-placeholder" style="aspect-ratio: 21/9;">
+        <i class="ti ti-sparkles img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>Final / closing image</strong> — A wide, polished view of the live gallery. Could be a full-page browser screenshot or a composed mockup showing the gallery in context. 2400×1030px (21:9).</p>
+      </div>
+    </div>
+
+  </main>
+
+  <nav class="case-nav">
+    <a href="unified-profile.html" class="case-nav-link">
+      <span class="case-nav-dir">Next project</span>
+      <span class="case-nav-title">Unified Adobe Profile →</span>
+    </a>
+  </nav>
+
+  <script>
+    window.addEventListener('scroll', function() {
+      document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 10);
+    });
+  </script>
+
+</body>
+</html>
