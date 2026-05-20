@@ -18,14 +18,13 @@
       --bg-card-hover: #323a44;
       --bg-gate: #2a3038;
       --text: #EEEEEE;
-      --text-muted: rgba(238,238,238,0.5);
-      --text-dim: rgba(238,238,238,0.35);
-      --text-faint: rgba(238,238,238,0.2);
-      --text-hint: rgba(238,238,238,0.15);
+      --text-muted: rgba(238,238,238,0.6);
+      --text-dim: rgba(238,238,238,0.45);
+      --text-faint: rgba(238,238,238,0.35);
+      --text-hint: rgba(238,238,238,0.45);
       --border: rgba(238,238,238,0.08);
       --border-card: rgba(238,238,238,0.12);
       --accent: #FFD369;
-      --accent-bg: rgba(255,211,105,0.1);
       --font: 'Nunito Sans', sans-serif;
     }
 
@@ -70,7 +69,7 @@
       font-weight: 400;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(238,238,238,0.4);
+      color: rgba(238,238,238,0.55);
       text-decoration: none;
       transition: color 0.15s;
     }
@@ -104,8 +103,6 @@
       line-height: 1.85;
       font-weight: 300;
       max-width: 560px;
-      padding-top: 40px;
-      border-top: 0.5px solid var(--border);
     }
 
     .bio-text strong { color: var(--text); font-weight: 600; }
@@ -127,7 +124,7 @@
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(238,238,238,0.25);
+      color: rgba(238,238,238,0.55);
     }
 
     .section-count { font-size: 11px; color: var(--text-hint); }
@@ -149,6 +146,13 @@
       filter: none;
       pointer-events: auto;
       user-select: auto;
+    }
+
+    /* hide extra cards on mobile when locked */
+    @media (max-width: 768px) {
+      .work-grid:not(.unlocked) .mobile-hide {
+        display: none;
+      }
     }
 
     /* CARDS */
@@ -205,7 +209,7 @@
       font-weight: 400;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(238,238,238,0.18);
+      color: rgba(238,238,238,0.3);
     }
 
     .card-body {
@@ -222,11 +226,11 @@
       margin-bottom: 8px;
     }
 
-    .card-year { font-size: 11px; font-weight: 400; letter-spacing: 0.04em; color: rgba(238,238,238,0.5); }
+    .card-year { font-size: 11px; font-weight: 400; letter-spacing: 0.04em; color: rgba(238,238,238,0.6); }
 
     .card-arrow {
       font-size: 16px;
-      color: rgba(238,238,238,0.12);
+      color: rgba(238,238,238,0.2);
       transition: color 0.2s;
     }
 
@@ -249,7 +253,7 @@
       margin-bottom: 18px;
     }
 
-    .card-desc strong { color: rgba(238,238,238,0.6); font-weight: 600; }
+    .card-desc strong { color: rgba(238,238,238,0.7); font-weight: 600; }
 
     .card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; }
 
@@ -260,14 +264,14 @@
       text-transform: uppercase;
       padding: 4px 12px;
       border-radius: 20px;
-      border: 0.5px solid rgba(255,211,105,0.2);
-      color: rgba(255,211,105,0.6);
+      border: 0.5px solid rgba(255,211,105,0.25);
+      color: rgba(255,211,105,0.7);
     }
 
-    .card-tag.teal { border-color: rgba(93,202,165,0.2); color: rgba(93,202,165,0.6); }
-    .card-tag.blue { border-color: rgba(133,183,235,0.2); color: rgba(133,183,235,0.6); }
-    .card-tag.purple { border-color: rgba(175,169,236,0.2); color: rgba(175,169,236,0.6); }
-    .card-tag.coral { border-color: rgba(240,153,123,0.2); color: rgba(240,153,123,0.6); }
+    .card-tag.teal { border-color: rgba(93,202,165,0.25); color: rgba(93,202,165,0.7); }
+    .card-tag.blue { border-color: rgba(133,183,235,0.25); color: rgba(133,183,235,0.7); }
+    .card-tag.purple { border-color: rgba(175,169,236,0.25); color: rgba(175,169,236,0.7); }
+    .card-tag.coral { border-color: rgba(240,153,123,0.25); color: rgba(240,153,123,0.7); }
 
     /* PASSWORD GATE */
     .password-gate {
@@ -306,12 +310,15 @@
     .gate-sub {
       font-size: 12px;
       font-weight: 300;
-      color: rgba(238,238,238,0.4);
+      color: rgba(238,238,238,0.55);
       margin-bottom: 20px;
       line-height: 1.55;
     }
 
-    .gate-row { display: flex; gap: 8px; }
+    .gate-row {
+      display: flex;
+      gap: 8px;
+    }
 
     .gate-input {
       flex: 1;
@@ -324,10 +331,11 @@
       color: var(--text);
       outline: none;
       transition: border-color 0.15s;
+      min-width: 0;
     }
 
     .gate-input:focus { border-color: rgba(255,255,255,0.3); }
-    .gate-input::placeholder { color: rgba(238,238,238,0.2); }
+    .gate-input::placeholder { color: rgba(238,238,238,0.3); }
 
     .gate-btn {
       background: #EEEEEE;
@@ -341,6 +349,7 @@
       cursor: pointer;
       white-space: nowrap;
       transition: background 0.15s;
+      flex-shrink: 0;
     }
 
     .gate-btn:hover { background: var(--accent); }
@@ -373,7 +382,7 @@
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(238,238,238,0.22);
+      color: rgba(238,238,238,0.55);
       margin-bottom: 24px;
       padding-bottom: 14px;
       border-bottom: 0.5px solid var(--border);
@@ -389,7 +398,7 @@
     }
 
     .exp-role { font-size: 15px; font-weight: 600; color: var(--text); }
-    .exp-date { font-size: 11px; font-weight: 300; color: var(--text-faint); }
+    .exp-date { font-size: 11px; font-weight: 300; color: rgba(238,238,238,0.45); }
     .exp-company { font-size: 13px; font-weight: 400; color: var(--accent); margin-bottom: 5px; }
     .exp-desc { font-size: 12px; font-weight: 300; color: var(--text-dim); line-height: 1.65; }
 
@@ -398,7 +407,7 @@
     .skills-block-label {
       font-size: 11px;
       font-weight: 600;
-      color: rgba(238,238,238,0.2);
+      color: rgba(238,238,238,0.55);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       margin-bottom: 10px;
@@ -411,14 +420,14 @@
       font-weight: 300;
       padding: 5px 13px;
       border-radius: 20px;
-      border: 0.5px solid rgba(238,238,238,0.1);
-      color: rgba(238,238,238,0.4);
+      border: 0.5px solid rgba(238,238,238,0.15);
+      color: rgba(238,238,238,0.55);
     }
 
     .edu-item { padding: 14px 0; border-bottom: 0.5px solid rgba(238,238,238,0.06); }
     .edu-degree { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
     .edu-school { font-size: 13px; font-weight: 400; color: var(--accent); margin-bottom: 2px; }
-    .edu-year { font-size: 11px; font-weight: 300; color: var(--text-faint); }
+    .edu-year { font-size: 11px; font-weight: 300; color: rgba(238,238,238,0.45); }
 
     /* FOOTER */
     footer {
@@ -429,11 +438,11 @@
       align-items: center;
     }
 
-    .footer-note { font-size: 11px; font-weight: 300; color: rgba(238,238,238,0.18); }
+    .footer-note { font-size: 11px; font-weight: 300; color: rgba(238,238,238,0.35); }
     .footer-links { display: flex; gap: 20px; }
 
     .footer-links a {
-      color: rgba(238,238,238,0.2);
+      color: rgba(238,238,238,0.35);
       text-decoration: none;
       font-size: 18px;
       transition: color 0.15s;
@@ -448,13 +457,20 @@
     @media (max-width: 768px) {
       nav { padding: 20px 24px; }
       .hero { padding: 60px 24px 48px; }
-      .hero h1 { font-size: 40px; }
+      .hero h1 { font-size: 40px; margin-bottom: 32px; }
+      .bio-text { font-size: 14px; }
       .section { padding: 48px 24px; }
+
       .work-grid { grid-template-columns: 1fr; }
+
+      /* gate stacks vertically on mobile */
+      .gate-row { flex-direction: column; }
+      .gate-btn { width: 100%; }
+      .gate-box { width: calc(100% - 48px); max-width: 320px; }
+
       .resume-section { padding: 48px 24px; }
       .resume-grid { grid-template-columns: 1fr; gap: 40px; }
-      footer { padding: 24px; flex-direction: column; gap: 16px; }
-      .gate-box { width: 280px; padding: 24px; }
+      footer { padding: 24px; flex-direction: column; gap: 16px; text-align: center; }
     }
   </style>
 </head>
@@ -483,7 +499,6 @@
     <div class="work-wrapper">
       <div class="work-grid" id="workGrid">
 
-        <!-- Hidden until unlock -->
         <a class="work-card clickable hidden" href="firefly-gallery.html" id="card1">
           <div class="card-image gold">
             <i class="ti ti-photo card-image-icon gold" aria-hidden="true"></i>
@@ -522,8 +537,7 @@
           </div>
         </a>
 
-        <!-- Always blurred, clickable after unlock -->
-        <a class="work-card" href="app-communities.html" id="card3">
+        <div class="work-card" id="card3">
           <div class="card-image teal">
             <i class="ti ti-building-community card-image-icon teal" aria-hidden="true"></i>
             <span class="card-image-label">Add your image</span>
@@ -540,9 +554,9 @@
               <span class="card-tag teal">Systems</span>
             </div>
           </div>
-        </a>
+        </div>
 
-        <a class="work-card" href="project-4.html" id="card4">
+        <div class="work-card" id="card4">
           <div class="card-image purple">
             <i class="ti ti-layout-grid card-image-icon purple" aria-hidden="true"></i>
             <span class="card-image-label">Add your image</span>
@@ -558,9 +572,9 @@
               <span class="card-tag purple">Coming soon</span>
             </div>
           </div>
-        </a>
+        </div>
 
-        <a class="work-card" href="project-5.html" id="card5">
+        <div class="work-card mobile-hide" id="card5">
           <div class="card-image coral">
             <i class="ti ti-device-desktop card-image-icon coral" aria-hidden="true"></i>
             <span class="card-image-label">Add your image</span>
@@ -576,9 +590,9 @@
               <span class="card-tag coral">Coming soon</span>
             </div>
           </div>
-        </a>
+        </div>
 
-        <a class="work-card" href="project-6.html" id="card6">
+        <div class="work-card mobile-hide" id="card6">
           <div class="card-image gold">
             <i class="ti ti-brush card-image-icon gold" aria-hidden="true"></i>
             <span class="card-image-label">Add your image</span>
@@ -594,7 +608,7 @@
               <span class="card-tag">Coming soon</span>
             </div>
           </div>
-        </a>
+        </div>
 
       </div>
 
@@ -605,7 +619,7 @@
           <p class="gate-sub">Enter the password to unlock projects.</p>
           <div class="gate-row">
             <input class="gate-input" type="password" placeholder="Password" id="pwInput" autocomplete="off" />
-            <button class="gate-btn" id="gateBtn" onclick="checkPassword()">Unlock</button>
+            <button class="gate-btn" onclick="checkPassword()">Unlock</button>
           </div>
           <p class="gate-error" id="gateError">Incorrect password.</p>
         </div>
@@ -618,70 +632,45 @@
     <div class="resume-grid">
       <div>
         <p class="resume-col-label">Experience</p>
-
         <div class="exp-item">
-          <div class="exp-row">
-            <span class="exp-role">Staff UX Designer</span>
-            <span class="exp-date">2021 – Present</span>
-          </div>
+          <div class="exp-row"><span class="exp-role">Staff UX Designer</span><span class="exp-date">2021 – Present</span></div>
           <p class="exp-company">Adobe · San Francisco</p>
           <p class="exp-desc">Design lead for Adobe Community — generative AI surfaces, community experiences, and identity systems at scale.</p>
         </div>
-
         <div class="exp-item">
-          <div class="exp-row">
-            <span class="exp-role">Product Designer</span>
-            <span class="exp-date">2020 – 2021</span>
-          </div>
+          <div class="exp-row"><span class="exp-role">Product Designer</span><span class="exp-date">2020 – 2021</span></div>
           <p class="exp-company">Lightform · San Francisco</p>
           <p class="exp-desc">Led design of Lightform Creator, a projection mapping software for AR content creation.</p>
         </div>
-
         <div class="exp-item">
-          <div class="exp-row">
-            <span class="exp-role">UX Designer</span>
-            <span class="exp-date">2019 – 2020</span>
-          </div>
+          <div class="exp-row"><span class="exp-role">UX Designer</span><span class="exp-date">2019 – 2020</span></div>
           <p class="exp-company">Minds of Tomorrow · San Francisco</p>
           <p class="exp-desc">Designed interactive educational workshops on emerging technologies for students.</p>
         </div>
-
         <div class="exp-item">
-          <div class="exp-row">
-            <span class="exp-role">UX Designer</span>
-            <span class="exp-date">2018 – 2019</span>
-          </div>
+          <div class="exp-row"><span class="exp-role">UX Designer</span><span class="exp-date">2018 – 2019</span></div>
           <p class="exp-company">NIO · San Francisco</p>
           <p class="exp-desc">UX/UI for autonomous vehicle interactions including AR and eye-tracking.</p>
         </div>
-
         <div class="exp-item">
-          <div class="exp-row">
-            <span class="exp-role">Graphic Designer</span>
-            <span class="exp-date">2012 – 2016</span>
-          </div>
+          <div class="exp-row"><span class="exp-role">Graphic Designer</span><span class="exp-date">2012 – 2016</span></div>
           <p class="exp-company">Fenway Health · Boston</p>
           <p class="exp-desc">Visual direction for print and digital materials across campaigns and brand communications.</p>
         </div>
-
         <p class="resume-col-label" style="margin-top: 44px;">Education</p>
-
         <div class="edu-item">
           <p class="edu-degree">MDes Interaction Design</p>
           <p class="edu-school">California College of the Arts</p>
           <p class="edu-year">2016 – 2017 · San Francisco</p>
         </div>
-
         <div class="edu-item">
           <p class="edu-degree">BFA Graphic Design</p>
           <p class="edu-school">Massachusetts College of Art & Design</p>
           <p class="edu-year">2008 – 2012 · Boston</p>
         </div>
       </div>
-
       <div>
         <p class="resume-col-label">Skills</p>
-
         <div class="skills-block">
           <p class="skills-block-label">Core competencies</p>
           <div class="skills-pills">
@@ -695,7 +684,6 @@
             <span class="skill-pill">Cross-functional leadership</span>
           </div>
         </div>
-
         <div class="skills-block">
           <p class="skills-block-label">Methods</p>
           <div class="skills-pills">
@@ -708,7 +696,6 @@
             <span class="skill-pill">Content strategy</span>
           </div>
         </div>
-
         <div class="skills-block">
           <p class="skills-block-label">Tools</p>
           <div class="skills-pills">
@@ -733,29 +720,32 @@
     </div>
   </footer>
 
+  <script src="auth.js"></script>
   <script>
-    // Sticky nav border on scroll
     window.addEventListener('scroll', function() {
       document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 10);
     });
 
-    // Password gate
+    function unlock() {
+      document.getElementById('workGrid').classList.add('unlocked');
+      document.getElementById('passwordGate').style.display = 'none';
+      document.getElementById('sectionCount').textContent = '6 projects';
+      ['card1', 'card2'].forEach(function(id) {
+        document.getElementById(id).classList.remove('hidden');
+      });
+      ['card3', 'card4', 'card5', 'card6'].forEach(function(id) {
+        var c = document.getElementById(id);
+        c.classList.add('clickable');
+        c.classList.remove('mobile-hide');
+      });
+      sessionStorage.setItem('unlocked', 'true');
+    }
+
     function checkPassword() {
       var input = document.getElementById('pwInput').value;
       var error = document.getElementById('gateError');
-      if (input === 'showmework') {
-        document.getElementById('workGrid').classList.add('unlocked');
-        document.getElementById('passwordGate').style.display = 'none';
-        document.getElementById('sectionCount').textContent = '6 projects';
-        ['card1', 'card2'].forEach(function(id) {
-          document.getElementById(id).classList.remove('hidden');
-        });
-        ['card3', 'card4', 'card5', 'card6'].forEach(function(id) {
-          var c = document.getElementById(id);
-          c.classList.add('clickable');
-        });
-        // Persist unlock for session
-        sessionStorage.setItem('unlocked', 'true');
+      if (window._checkPortfolioPassword && window._checkPortfolioPassword(input)) {
+        unlock();
       } else {
         error.style.display = 'block';
         document.getElementById('pwInput').value = '';
@@ -766,9 +756,8 @@
       if (e.key === 'Enter') checkPassword();
     });
 
-    // Restore unlock state on page load
     if (sessionStorage.getItem('unlocked') === 'true') {
-      checkPassword();
+      unlock();
     }
   </script>
 
