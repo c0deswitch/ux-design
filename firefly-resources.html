@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firefly Resources Tab — Anum Awan</title>
+  <meta name="description" content="Case study: Designing the Firefly Resources Tab — bringing Adobe Learn tutorials and HelpX articles directly into Firefly." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #222831;
+      --bg-card: #2d333c;
+      --text: #EEEEEE;
+      --text-muted: rgba(238,238,238,0.75);
+      --text-dim: rgba(238,238,238,0.6);
+      --text-faint: rgba(238,238,238,0.5);
+      --border: rgba(238,238,238,0.08);
+      --accent: #FFD369;
+      --font: 'Nunito Sans', sans-serif;
+      --max: 720px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 64px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+      border-bottom: 0.5px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    nav.scrolled { border-bottom-color: var(--border); }
+
+    .nav-home {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s;
+    }
+    .nav-home:hover { color: var(--accent); }
+
+    .nav-case-title {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(238,238,238,0.3);
+    }
+
+    .case-hero {
+      padding: 80px 64px 72px;
+      border-bottom: 0.5px solid var(--border);
+      max-width: calc(var(--max) + 128px);
+      margin: 0 auto;
+    }
+
+    .case-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .case-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 0.5px solid rgba(255,211,105,0.25);
+      color: rgba(255,211,105,0.7);
+    }
+
+    .case-hero h1 {
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 24px;
+      max-width: 700px;
+    }
+
+    .case-hero h1 strong {
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .case-lede {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: var(--max);
+      margin-bottom: 48px;
+    }
+
+    .case-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      border-top: 0.5px solid var(--border);
+      padding-top: 32px;
+    }
+
+    .meta-item { padding: 16px 0 16px 20px; border-left: 2px solid rgba(255,211,105,0.2); }
+
+    .meta-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.35);
+      margin-bottom: 6px;
+    }
+
+    .meta-value {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .case-content {
+      max-width: calc(var(--max) + 128px);
+      margin: 0 auto;
+      padding: 0 64px 96px;
+    }
+
+    .img-full { width: 100%; margin: 56px 0; }
+
+    .img-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-card);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 1px dashed rgba(238,238,238,0.12);
+    }
+
+    .img-placeholder.wide { aspect-ratio: 21 / 9; }
+    .img-placeholder.tall { aspect-ratio: 4 / 3; }
+
+    .img-placeholder-icon { font-size: 32px; color: rgba(238,238,238,0.15); }
+
+    .img-placeholder-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(238,238,238,0.25);
+      text-align: center;
+      padding: 0 24px;
+      line-height: 1.5;
+    }
+
+    .img-caption {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text-faint);
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    .img-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 56px 0;
+    }
+
+    .img-2col .img-placeholder { aspect-ratio: 4 / 3; }
+
+    .img-3col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 56px 0;
+    }
+
+    .img-3col .img-placeholder { aspect-ratio: 3 / 4; }
+
+    .case-section { padding: 64px 0 0; }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.35);
+      margin-bottom: 16px;
+    }
+
+    .case-section h2 {
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 300;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      max-width: var(--max);
+    }
+
+    .case-section h2 strong { font-weight: 700; color: var(--accent); }
+
+    .case-section p {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: var(--max);
+      margin-bottom: 20px;
+    }
+
+    .case-section p:last-child { margin-bottom: 0; }
+    .case-section p strong { font-weight: 600; color: var(--text); }
+
+    .callout {
+      border-left: 2px solid var(--accent);
+      padding: 20px 24px;
+      margin: 36px 0;
+      background: rgba(255,211,105,0.04);
+      border-radius: 0 8px 8px 0;
+      max-width: var(--max);
+    }
+
+    .callout p {
+      font-size: 15px;
+      font-weight: 400;
+      color: rgba(238,238,238,0.75);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* FEATURE CARDS */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 36px 0;
+      max-width: var(--max);
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+
+    .feature-icon {
+      font-size: 20px;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .feature-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* MILESTONE BADGE */
+    .milestone {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: rgba(255,211,105,0.06);
+      border: 0.5px solid rgba(255,211,105,0.2);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 36px 0;
+      max-width: var(--max);
+    }
+
+    .milestone-icon {
+      font-size: 24px;
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .milestone-text h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .milestone-text p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+      max-width: none;
+    }
+
+    /* CREDITS */
+    .credits-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: var(--max);
+      margin-top: 32px;
+    }
+
+    .credits-team {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 22px 24px;
+    }
+
+    .credits-team-name {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.35);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .credit-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6px 0;
+      border-bottom: 0.5px solid rgba(238,238,238,0.04);
+    }
+
+    .credit-item:last-child { border-bottom: none; }
+
+    .credit-role {
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(238,238,238,0.4);
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+
+    .credit-name {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .credit-name.highlight {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .divider {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      margin: 64px 0 0;
+    }
+
+    .case-nav {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 48px 64px;
+      border-top: 0.5px solid var(--border);
+      max-width: calc(var(--max) + 128px);
+      margin: 0 auto;
+    }
+
+    .case-nav-link {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-decoration: none;
+      transition: opacity 0.15s;
+      text-align: right;
+    }
+    .case-nav-link:hover { opacity: 0.7; }
+
+    .case-nav-dir {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(238,238,238,0.35);
+    }
+
+    .case-nav-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .nav-case-title { display: none; }
+      .case-hero { padding: 48px 24px 40px; }
+      .case-content { padding: 0 24px 72px; }
+      .case-meta { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .img-2col, .img-3col { grid-template-columns: 1fr; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .credits-grid { grid-template-columns: 1fr; }
+      .case-nav { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="mainNav">
+    <a href="index.html" class="nav-home">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i>
+      Anum Awan
+    </a>
+    <span class="nav-case-title">Firefly Resources Tab</span>
+  </nav>
+
+  <header class="case-hero">
+    <div class="case-tags">
+      <span class="case-tag">Gen AI</span>
+      <span class="case-tag">Product design</span>
+    </div>
+    <h1>Firefly <strong>Resources</strong> Tab</h1>
+    <p class="case-lede">Designing a one-stop in-app learning destination that brings Adobe Learn tutorials and curated HelpX articles directly into Firefly — so creators can learn, get help, and stay in flow without ever switching tabs.</p>
+
+    <div class="case-meta">
+      <div class="meta-item">
+        <p class="meta-label">Role</p>
+        <p class="meta-value">Staff UX Designer</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Timeline</p>
+        <p class="meta-value">2025</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Platform</p>
+        <p class="meta-value">Web · Adobe Firefly</p>
+      </div>
+      <div class="meta-item">
+        <p class="meta-label">Team</p>
+        <p class="meta-value">Learn + Firefly cross-functional</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="case-content">
+
+    <!-- HERO IMAGE -->
+    <div class="img-full">
+      <div class="img-placeholder">
+        <i class="ti ti-book img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>Hero image</strong> — Full-width screenshot of the Resources Tab open inside Firefly, ideally showing the Tutorials tab with content visible. Best captured at full desktop width. 2400×1350px.</p>
+      </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="case-section">
+      <p class="section-eyebrow">Overview</p>
+      <h2>Learning and help, built <strong>into the tool</strong></h2>
+      <p>One of the most consistent friction points in any creative tool is the moment a user gets stuck and has to leave to find help. They open a new tab, search for a tutorial, lose their place, and often don't come back. The Firefly Resources Tab was designed to close that gap entirely.</p>
+      <p>Working across the Learn and Firefly teams, I designed an in-app experience that surfaces <strong>Adobe Learn tutorials</strong> and <strong>curated HelpX articles</strong> directly inside Firefly — giving users the right content at the right moment, without breaking their creative flow.</p>
+    </div>
+
+    <div class="milestone">
+      <i class="ti ti-trophy milestone-icon" aria-hidden="true"></i>
+      <div class="milestone-text">
+        <h3>A first for Adobe Learn</h3>
+        <p>This marked the first time Learn Engineering built and delivered an experience directly inside an Adobe product — integrating tutorials seamlessly into the Firefly codebase and setting a precedent for in-product learning across Adobe.</p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- PROBLEM -->
+    <div class="case-section">
+      <p class="section-eyebrow">The problem</p>
+      <h2>Help content existed. It just wasn't <strong>where users needed it</strong>.</h2>
+      <p>Adobe already had a rich library of Firefly tutorials on Adobe Learn and a comprehensive set of support articles on HelpX. The problem wasn't the content — it was the context. Users who hit a wall mid-creation had to leave Firefly to find answers, interrupting their flow and often not returning.</p>
+
+      <div class="callout">
+        <p>The goal was simple but significant: make learning feel like part of creating, not a detour from it. Everything a user needs should be reachable without leaving the workspace.</p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- WHAT WE BUILT -->
+    <div class="case-section">
+      <p class="section-eyebrow">What we built</p>
+      <h2>Three surfaces, one <strong>cohesive experience</strong></h2>
+      <p>The Resources Tab is organised into three distinct areas, each designed to serve a different user need — from structured learning to quick answers to community connection.</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <i class="ti ti-player-play feature-icon" aria-hidden="true"></i>
+        <p class="feature-title">Tutorials Tab</p>
+        <p class="feature-desc">The default view. Features the top 3 high-impact tutorials, plus an "All Tutorials" section giving access to the complete Firefly library in-app.</p>
+      </div>
+      <div class="feature-card">
+        <i class="ti ti-help-circle feature-icon" aria-hidden="true"></i>
+        <p class="feature-title">Help Tab</p>
+        <p class="feature-desc">Quick links to the most searched HelpX resources, plus an embedded search field for fast access to detailed support content.</p>
+      </div>
+      <div class="feature-card">
+        <i class="ti ti-brand-instagram feature-icon" aria-hidden="true"></i>
+        <p class="feature-title">Social Links</p>
+        <p class="feature-desc">Direct links to Firefly and Adobe's social pages — connecting users to the broader creative community.</p>
+      </div>
+    </div>
+
+    <!-- 3 SCREENS -->
+    <div class="img-3col">
+      <div>
+        <div class="img-placeholder">
+          <i class="ti ti-player-play img-placeholder-icon" aria-hidden="true"></i>
+          <p class="img-placeholder-label"><strong>Tutorials tab</strong> — Default view showing top 3 tutorials and the All Tutorials section. Portrait crop. 800×1067px.</p>
+        </div>
+        <p class="img-caption">Tutorials tab — the default view.</p>
+      </div>
+      <div>
+        <div class="img-placeholder">
+          <i class="ti ti-help-circle img-placeholder-icon" aria-hidden="true"></i>
+          <p class="img-placeholder-label"><strong>Help tab</strong> — Quick links and the embedded HelpX search field. Portrait crop. 800×1067px.</p>
+        </div>
+        <p class="img-caption">Help tab — quick answers, embedded search.</p>
+      </div>
+      <div>
+        <div class="img-placeholder">
+          <i class="ti ti-brand-instagram img-placeholder-icon" aria-hidden="true"></i>
+          <p class="img-placeholder-label"><strong>Social links</strong> — The social icons panel linking to Firefly and Adobe social pages. Portrait crop. 800×1067px.</p>
+        </div>
+        <p class="img-caption">Social links — connecting to the community.</p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- DESIGN PROCESS -->
+    <div class="case-section">
+      <p class="section-eyebrow">Design process</p>
+      <h2>Designing for <strong>context, not content</strong></h2>
+      <p>The central design challenge wasn't what to show — Adobe already had excellent tutorial and help content — it was how to surface it in a way that felt native to Firefly rather than bolted on. The tab needed to load fast, navigate smoothly, and integrate with Firefly's visual language without feeling like a separate product embedded inside the app.</p>
+      <p>Working closely with the Learn and Firefly engineering teams, I iterated on the information architecture, the entry point within the Firefly UI, and the visual treatment of content cards to ensure the experience felt cohesive and purposeful. The panel-based layout keeps the creative canvas fully visible while giving users access to everything they need.</p>
+    </div>
+
+    <div class="img-full">
+      <div class="img-placeholder">
+        <i class="ti ti-layout-sidebar img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>Design explorations</strong> — Early wireframes, layout explorations, or Figma iterations showing how you arrived at the final panel design. Could be an annotated comparison of options considered. 2400×1350px.</p>
+      </div>
+      <p class="img-caption">Early explorations — finding the right integration point within the Firefly UI.</p>
+    </div>
+
+    <div class="img-2col">
+      <div>
+        <div class="img-placeholder tall">
+          <i class="ti ti-device-desktop img-placeholder-icon" aria-hidden="true"></i>
+          <p class="img-placeholder-label"><strong>In context — full app view</strong> — Screenshot showing the Resources Tab open inside the full Firefly interface, so the panel-in-canvas relationship is visible. 1200×900px.</p>
+        </div>
+        <p class="img-caption">The tab in context — canvas remains fully visible.</p>
+      </div>
+      <div>
+        <div class="img-placeholder tall">
+          <i class="ti ti-search img-placeholder-icon" aria-hidden="true"></i>
+          <p class="img-placeholder-label"><strong>Help search in use</strong> — Screenshot of the embedded HelpX search field with results visible, showing the in-app search experience. 1200×900px.</p>
+        </div>
+        <p class="img-caption">Embedded search — support content without leaving Firefly.</p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- OUTCOME -->
+    <div class="case-section">
+      <p class="section-eyebrow">Outcome</p>
+      <h2>Learning built into the <strong>product, not around it</strong></h2>
+      <p>The Resources Tab shipped as part of Firefly and marked a meaningful shift in how Adobe delivers learning content — moving from a separate destination to an integrated, in-product experience. For users, it means fewer interruptions and faster answers. For Adobe, it establishes a model for how Learn content can live inside products across the ecosystem.</p>
+      <p>The collaboration between the Learn and Firefly teams set a new precedent: that engineering a learning experience into a product is not only feasible, but a genuine improvement to the user experience that doesn't require the user to go anywhere else.</p>
+    </div>
+
+    <!-- FINAL IMAGE -->
+    <div class="img-full">
+      <div class="img-placeholder wide">
+        <i class="ti ti-sparkles img-placeholder-icon" aria-hidden="true"></i>
+        <p class="img-placeholder-label"><strong>Closing image</strong> — A polished, wide view of the live Resources Tab in Firefly. Could be a composed mockup or full browser screenshot. 2400×1030px (21:9).</p>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- CREDITS -->
+    <div class="case-section">
+      <p class="section-eyebrow">Credits</p>
+      <h2>A cross-functional <strong>collaboration</strong></h2>
+      <p>This project was a true team effort across the Learn and Firefly organisations. Special thanks to everyone who made it happen.</p>
+
+      <div class="credits-grid">
+        <div class="credits-team">
+          <p class="credits-team-name">Team Learn</p>
+          <div class="credit-item">
+            <span class="credit-role">PM</span>
+            <span class="credit-name">Sandeep Kulkarni</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">PgM</span>
+            <span class="credit-name">Prag Kapoor</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">Content Strategy</span>
+            <span class="credit-name">Erin Wittkop-Coffey</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">Design</span>
+            <span class="credit-name highlight">Anum Awan</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">Design</span>
+            <span class="credit-name">Shruti Chandra</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">Engineering</span>
+            <span class="credit-name">Karthik Mavuram, Shane Do, Neha Gautam</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">QE</span>
+            <span class="credit-name">Volha Berasneva, Binod Yadav, Saurabh Kumar, Avinash Singh</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">Global Ops</span>
+            <span class="credit-name">John Koch, Cory Wall</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">Approvers</span>
+            <span class="credit-name">Markus Spiering, Erick Vera</span>
+          </div>
+        </div>
+
+        <div class="credits-team">
+          <p class="credits-team-name">Team Firefly</p>
+          <div class="credit-item">
+            <span class="credit-role">PM</span>
+            <span class="credit-name">Tracy Hirai</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">PgM</span>
+            <span class="credit-name">Nancy Pan</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">Engineering</span>
+            <span class="credit-name">Neeraj Kapoor, Daniel Merrill</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">QE</span>
+            <span class="credit-name">Becky Chai</span>
+          </div>
+          <div class="credit-item">
+            <span class="credit-role">Approvers</span>
+            <span class="credit-name">Zeke Koch</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <nav class="case-nav">
+    <a href="firefly-gallery.html" class="case-nav-link">
+      <span class="case-nav-dir">Next project</span>
+      <span class="case-nav-title">Firefly Gallery →</span>
+    </a>
+  </nav>
+
+  <script>
+    window.addEventListener('scroll', function() {
+      document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 10);
+    });
+  </script>
+
+</body>
+</html>
